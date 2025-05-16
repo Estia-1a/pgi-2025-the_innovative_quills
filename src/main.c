@@ -15,7 +15,6 @@ int main(int argc, char **argv) {
    or 
    - Simply run your compiled project with start button on the blue menu bar at the bottom of the VS Code window.
    */
-
   /*DO NOT EDIT THIS PART*/
   Config configuration ;
   parse_arguments( argc, argv, &configuration ) ;
