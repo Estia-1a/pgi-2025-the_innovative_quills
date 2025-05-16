@@ -3,5 +3,7 @@
 
 
 void helloWorld();
+void dimension(char*);
+
 
 #endif
