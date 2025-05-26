@@ -53,9 +53,14 @@ int main(int argc, char **argv) {
     int y = atoi (argv[6]);
     print_pixel(configuration.filenames[0], x, y);
   }
-  /*
-   * TO COMPLETE
-   */
-  
+
+  else if ( strncmp( configuration.command, "max_pixel",9) == 0 ) {
+    max_pixel(configuration.filenames[0]);
+  }
+  else if ( strncmp( configuration.command, "min_pixel",9) == 0 ) {
+    min_pixel(configuration.filenames[0]);
+  }
   return 0;
 }
+
+
