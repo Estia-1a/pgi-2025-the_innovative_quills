@@ -82,6 +82,9 @@ int main(int argc, char **argv) {
     color_green(configuration.filenames[0]) ;
   }
 
+else if ( strncmp( configuration.command, "color_blue",10) == 0 ) {
+    color_blue(configuration.filenames[0]) ;
+  }
   return 0;
 }
 
