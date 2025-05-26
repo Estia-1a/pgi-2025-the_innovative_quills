@@ -311,7 +311,6 @@ void color_green(char *source_path)
     }
     write_image_data("vert.bmp", data, width, height);
 }
-
 void color_blue(char *source_path)
 {
     int width, height, channel_count, i, j, k = 0;
@@ -366,4 +365,24 @@ void color_invert(char *source_path)
         }
     }
     write_image_data("invert.bmp", data, width, height);
+}
+void color_gray_luminance(char *source_path)
+{
+    int width, height, channel_count, i, j;
+    unsigned char *data;
+    pixelRGB *pixel;
+    unsigned char value;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    for (j = 0; j < height; j++)
+    {
+        for (i = 0; i < width; i++)
+        {
+            pixel = get_pixel(data, width, height, channel_count, i, j);
+            value = pixel->R * 0.21 + pixel->G * 0.72 + pixel->B * 0.07;
+            pixel->R = value;
+            pixel->G = value;
+            pixel->B = value;
+        }
+    }
+    write_image_data("gris2.bmp", data, width, height);
 }
