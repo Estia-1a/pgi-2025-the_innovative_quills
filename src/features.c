@@ -340,7 +340,7 @@ void color_gray(char *source_path)
     {
         for (i = 0; i < width; i++)
         {
-            pixel =get_pixel(data, width, height, channel_count, i, j);
+            pixel = get_pixel(data, width, height, channel_count, i, j);
             value = (pixel->R + pixel->G + pixel->B) / 3;
             pixel->R = value;
             pixel->G = value;
@@ -348,4 +348,22 @@ void color_gray(char *source_path)
         }
     }
     write_image_data("gris.bmp", data, width, height);
+}
+
+void color_invert(char *source_path)
+{
+    int width, height, channel_count, i, j, k = 0;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    for (j = 0; j < height; j++)
+    {
+        for (i = 0; i < width; i++)
+        {
+            data[k] = 255 - data[k];
+            data[k + 1] = 255 - data[k + 1];
+            data[k + 2] = 255 - data[k + 2];
+            k += channel_count;
+        }
+    }
+    write_image_data("invert.bmp", data, width, height);
 }
