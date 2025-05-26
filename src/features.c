@@ -174,3 +174,53 @@ void max_component (char *source_path, char *L) {
     }
     printf("max_component %s (%d, %d): %d \n", L, x, y, Max);
 }
+
+void min_component (char *source_path, char *L) {
+    int i, j, x=0, y=0, Min=765 ;
+    pixelRGB* pixel;
+    int width, height, channel_count;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    switch (L[0]) {
+        case 'R' :
+            for (j=0; j<height; j++) {
+                for (i=0; i<width; i++) {
+                    pixel=get_pixel(data, width, height, channel_count, i, j );
+                    if (Min>pixel->R) {
+                        Min=pixel->R;
+                        x=i;
+                        y=j;
+                    }
+                    }
+                }
+        break ;
+        case 'G' :
+            for (j=0; j<height; j++) {
+                for (i=0; i<width; i++) {
+                    pixel=get_pixel(data, width, height, channel_count, i, j );
+                    if (Min>pixel->G) {
+                        Min=pixel->G;
+                        x=i;
+                        y=j;
+                    }
+                    }
+                }
+        break;
+        case 'B' : 
+            for (j=0; j<height; j++) {
+                for (i=0; i<width; i++) {
+                    pixel=get_pixel(data, width, height, channel_count, i, j );
+                    if (Min>pixel->B) {
+                        Min=pixel->B;
+                        x=i;
+                        y=j;
+                    }
+                    }
+                }    
+        break;
+        default :
+            printf("Erreur entrez une valeur R, G ou B");
+        break;
+    }
+    printf("min_component %s (%d, %d): %d \n", L, x, y, Min);
+}
