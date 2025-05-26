@@ -68,7 +68,7 @@ void print_pixel( char *filename, int x, int y ) {
     else if (data==NULL) {
         printf("2NULL\n");
     } else {
-        i=channel_count*(width*(1+y)+x);
+        i=channel_count*(width*y+x);
         R=data[i];
         G=data[i+1];
         B=data[i+2];
