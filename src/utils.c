@@ -4,16 +4,21 @@
 
 /**
  * @brief Here, you have to define functions of the pixel struct : getPixel and setPixel.
- * 
+ *
  */
 
-pixelRGB * get_pixel( unsigned char* data, const unsigned int width, const unsigned int height, const unsigned int n, const unsigned int x, const unsigned int y ) {
-    if (x>=width || y>=height) {
+pixelRGB *get_pixel(unsigned char *data, const unsigned int width, const unsigned int height, const unsigned int n, const unsigned int x, const unsigned int y)
+{
+    if (x >= width || y >= height)
+    {
         return NULL;
     }
-    else if (data==NULL) {
+    else if (data == NULL)
+    {
         return NULL;
-    } else {
-        return (pixelRGB *) &data[n*(width*y+x)] ;
+    }
+    else
+    {
+        return (pixelRGB *)&data[n * (width * y + x)];
     }
 }
