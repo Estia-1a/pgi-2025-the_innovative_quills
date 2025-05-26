@@ -72,7 +72,7 @@ void print_pixel( char *filename, int x, int y ) {
         R=data[i];
         G=data[i+1];
         B=data[i+2];
-        printf("print_pixel (%d %d): %d, %d, %d \n", x, y, R, G, B);
+        printf("print_pixel (%d, %d): %d, %d, %d \n", x, y, R, G, B);
     }
 }
 
@@ -97,5 +97,29 @@ void max_pixel(char *source_path) {
     R=data[k];
     G=data[k+1];
     B=data[k+2];
-    printf("max_pixel (%d %d): %d, %d, %d \n", x, y, R, G, B);
+    printf("max_pixel (%d, %d): %d, %d, %d \n", x, y, R, G, B);
+}
+
+void min_pixel(char *source_path) {
+    int sum=765, i, j, x=0, y=0, current_sum=0,R,G,B,k;
+    pixelRGB* pixel;
+    int width, height, channel_count;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    for (j=0; j<height; j++) {
+        for (i=0; i<width; i++) {
+            pixel=get_pixel(data, width, height, channel_count, i, j );
+            current_sum=pixel->R+pixel->G+pixel->B;
+            if (sum>current_sum) {
+                sum=current_sum;
+                x=i;
+                y=j;
+            }
+        }
+    }
+    k=channel_count*(width*y+x);
+    R=data[k];
+    G=data[k+1];
+    B=data[k+2];
+    printf("min_pixel (%d, %d): %d, %d, %d \n", x, y, R, G, B);
 }
