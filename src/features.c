@@ -224,3 +224,17 @@ void min_component (char *source_path, char *L) {
     }
     printf("min_component %s (%d, %d): %d \n", L, x, y, Min);
 }
+
+void stat_report (char *source_path) {
+FILE *fichier = fopen("fichier.txt", "w");
+freopen("fichier.txt", "w", stdout);
+max_pixel(source_path);
+min_pixel(source_path);
+max_component(source_path, "R");
+max_component(source_path, "G");
+max_component(source_path, "B");
+min_component(source_path, "R");
+min_component(source_path, "G");
+min_component(source_path, "B");
+fclose(fichier);
+}

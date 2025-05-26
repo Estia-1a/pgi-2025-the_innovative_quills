@@ -70,6 +70,9 @@ int main(int argc, char **argv) {
     min_component(configuration.filenames[0], argv[5]) ;
   }
 
+else if ( strncmp( configuration.command, "stat_report",11) == 0 ) {
+    stat_report(configuration.filenames[0]) ;
+  }
   return 0;
 }
 
