@@ -238,3 +238,17 @@ min_component(source_path, "G");
 min_component(source_path, "B");
 fclose(fichier);
 }
+
+void color_red (char *source_path) {
+    int width, height, channel_count, i, j, k=0;
+    unsigned char *data;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    for (j=0; j<height; j++) {
+        for (i=0; i<width; i++) {
+            data[k+1]=0;
+            data[k+2]=0;
+            k+=channel_count;
+            }
+        }
+    write_image_data("rouge.bmp", data, width, height);
+}
