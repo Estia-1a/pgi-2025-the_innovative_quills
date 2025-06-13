@@ -387,18 +387,26 @@ void color_gray_luminance(char *source_path)
     }
     write_image_data("image_out.bmp", data, width, height);
 }
-int max (int a, int b) {
-    if (a>b) {
+int max(int a, int b)
+{
+    if (a > b)
+    {
         return a;
-    } else {
+    }
+    else
+    {
         return b;
     }
 }
 
-int min (int a, int b) {
-    if (a<b) {
+int min(int a, int b)
+{
+    if (a < b)
+    {
         return a;
-    } else {
+    }
+    else
+    {
         return b;
     }
 }
@@ -415,11 +423,42 @@ void color_desaturate(char *source_path)
         for (i = 0; i < width; i++)
         {
             pixel = get_pixel(data, width, height, channel_count, i, j);
-            value = (min(min(pixel->R,pixel->G),pixel->B)+(max(max(pixel->R,pixel->G),pixel->B)))/2;
+            value = (min(min(pixel->R, pixel->G), pixel->B) + (max(max(pixel->R, pixel->G), pixel->B))) / 2;
             pixel->R = value;
             pixel->G = value;
             pixel->B = value;
         }
     }
     write_image_data("image_out.bmp", data, width, height);
+}
+
+void rotate_cw(char *source_path)
+{
+    unsigned char *data;
+    int width;
+    int height;
+    int channel_count;
+    int status;
+    status = read_image_data(source_path, &data, &width, &height, &channel_count);
+    if (status != 0)
+    {
+        unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int compt = 0; compt < channel_count; compt++)
+                {
+                    int new_x = -y + height - 1;
+                    int new_y = x;
+                    new_data[(new_y * height + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
+                }
+            }
+        }
+        write_image_data("image_out.bmp", new_data, height, width);
+    }
+    else
+    {
+        printf("erreur");
+    }
 }

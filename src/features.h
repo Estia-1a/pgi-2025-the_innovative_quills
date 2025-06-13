@@ -22,4 +22,5 @@ void color_gray_luminance(char *source_path);
 int max(int a, int b);
 int min(int a, int b);
 void color_desaturate(char *source_path);
+void rotate_cw(char *source_path);
 #endif
