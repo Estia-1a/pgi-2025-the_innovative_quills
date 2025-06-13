@@ -462,3 +462,30 @@ void rotate_cw(char *source_path)
         printf("erreur");
     }
 }
+
+void test (char *source_path)
+{
+    int width, height, channel_count, i, j;
+    unsigned char *data;
+    pixelRGB *pixel, *new_pixel;
+    static pixelRGB tmp[1000000];
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    
+    for (j = 0; j < height; j++)
+    {
+        for (i = 0; i < width; i++)
+        {
+            pixel = get_pixel(data, width, height, channel_count, i, j);
+            tmp[j*width+(width-1-i)] = *pixel ;
+        }
+    }
+    for (j = 0; j < height; j++)
+    {
+        for (i = 0; i < width; i++)
+        {
+            new_pixel = get_pixel(data, width, height, channel_count, i, j);
+            *new_pixel = tmp[j*width+i];
+        }
+    }
+    write_image_data("image_out.bmp", data, height, width);
+}

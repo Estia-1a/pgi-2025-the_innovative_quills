@@ -122,5 +122,9 @@ int main(int argc, char **argv)
   {
     rotate_cw(configuration.filenames[0]);
   }
+  else if (strncmp(configuration.command, "test", 10) == 0)
+  {
+    test(configuration.filenames[0]);
+  }
   return 0;
 }
