@@ -122,5 +122,10 @@ int main(int argc, char **argv)
   {
     rotate_cw(configuration.filenames[0]);
   }
+  else if (strncmp(configuration.command, "rotate_acw", 10) == 0)
+  {
+    rotate_acw(configuration.filenames[0]);
+  }
+
   return 0;
 }

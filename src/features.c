@@ -438,27 +438,40 @@ void rotate_cw(char *source_path)
     int width;
     int height;
     int channel_count;
-    int status;
-    status = read_image_data(source_path, &data, &width, &height, &channel_count);
-    if (status != 0)
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+    for (int y = 0; y < height; y++)
     {
-        unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
-        for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            for (int compt = 0; compt < channel_count; compt++)
             {
-                for (int compt = 0; compt < channel_count; compt++)
-                {
-                    int new_x = -y + height - 1;
-                    int new_y = x;
-                    new_data[(new_y * height + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
-                }
+                int new_x = -y + height - 1;
+                int new_y = x;
+                new_data[(new_y * height + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
             }
         }
-        write_image_data("image_out.bmp", new_data, height, width);
     }
-    else
+    write_image_data("image_out.bmp", new_data, height, width);
+}
+
+void rotate_acw(char *source_path)
+{
+    unsigned char *data;
+    int width, height, channel_count;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+    for (int y = 0; y < height; y++)
     {
-        printf("erreur");
+        for (int x = 0; x < width; x++)
+        {
+            for (int compt = 0; compt < channel_count; compt++)
+            {
+                int new_x = y;
+                int new_y = -x + width - 1;
+                new_data[(new_y * height + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
+            }
+        }
     }
+    write_image_data("image_out.bmp", new_data, height, width);
 }
