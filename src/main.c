@@ -122,9 +122,18 @@ int main(int argc, char **argv)
   {
     rotate_cw(configuration.filenames[0]);
   }
-  else if (strncmp(configuration.command, "test", 10) == 0)
+  else if (strncmp(configuration.command, "rotate_acw", 11) == 0)
+  {
+    rotate_cw(configuration.filenames[0]);
+  }
+  else if (strncmp(configuration.command, "test", 4) == 0)
   {
     test(configuration.filenames[0]);
   }
+  else if (strncmp(configuration.command, "mirror_horizontal", 17) == 0)
+  {
+    mirror_horizontal(configuration.filenames[0]);
+  }
+
   return 0;
 }
