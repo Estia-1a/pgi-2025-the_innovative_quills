@@ -1,0 +1,21 @@
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c: In function ‘rotate_cw’:
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:442:48: warning: implicit declaration of function ‘malloc’ [-Wimplicit-function-declaration]
+  442 |     unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+      |                                                ^~~~~~
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:6:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘malloc’
+    5 | #include "utils.h"
+  +++ |+#include <stdlib.h>
+    6 | 
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:442:48: warning: incompatible implicit declaration of built-in function ‘malloc’ [-Wbuiltin-declaration-mismatch]
+  442 |     unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+      |                                                ^~~~~~
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:442:48: note: include ‘<stdlib.h>’ or provide a declaration of ‘malloc’
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c: In function ‘rotate_acw’:
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:463:48: warning: incompatible implicit declaration of built-in function ‘malloc’ [-Wbuiltin-declaration-mismatch]
+  463 |     unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
+      |                                                ^~~~~~
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:463:48: note: include ‘<stdlib.h>’ or provide a declaration of ‘malloc’
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c: In function ‘stat_report’:
+/home/runner/work/pgi-2025-the_innovative_quills/pgi-2025-the_innovative_quills/src/features.c:269:5: warning: ignoring return value of ‘freopen’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  269 |     freopen("fichier.txt", "w", stdout);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
