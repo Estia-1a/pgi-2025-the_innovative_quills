@@ -292,7 +292,7 @@ void color_red(char *source_path)
             k += channel_count;
         }
     }
-    write_image_data("rouge.bmp", data, width, height);
+    write_image_data("image_out.bmp", data, width, height);
 }
 
 void color_green(char *source_path)
@@ -309,7 +309,7 @@ void color_green(char *source_path)
             k += channel_count;
         }
     }
-    write_image_data("vert.bmp", data, width, height);
+    write_image_data("image_out.bmp", data, width, height);
 }
 void color_blue(char *source_path)
 {
@@ -325,7 +325,7 @@ void color_blue(char *source_path)
             k += channel_count;
         }
     }
-    write_image_data("bleu.bmp", data, width, height);
+    write_image_data("image_out.bmp", data, width, height);
 }
 
 void color_gray(char *source_path)
@@ -346,7 +346,7 @@ void color_gray(char *source_path)
             pixel->B = value;
         }
     }
-    write_image_data("gris.bmp", data, width, height);
+    write_image_data("image_out.bmp", data, width, height);
 }
 
 void color_invert(char *source_path)
@@ -364,7 +364,7 @@ void color_invert(char *source_path)
             k += channel_count;
         }
     }
-    write_image_data("invert.bmp", data, width, height);
+    write_image_data("image_out.bmp", data, width, height);
 }
 void color_gray_luminance(char *source_path)
 {
@@ -384,5 +384,5 @@ void color_gray_luminance(char *source_path)
             pixel->B = value;
         }
     }
-    write_image_data("gris2.bmp", data, width, height);
+    write_image_data("image_out.bmp", data, width, height);
 }
