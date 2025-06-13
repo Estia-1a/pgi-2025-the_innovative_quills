@@ -366,6 +366,7 @@ void color_invert(char *source_path)
     }
     write_image_data("image_out.bmp", data, width, height);
 }
+
 void color_gray_luminance(char *source_path)
 {
     int width, height, channel_count, i, j;
@@ -379,6 +380,42 @@ void color_gray_luminance(char *source_path)
         {
             pixel = get_pixel(data, width, height, channel_count, i, j);
             value = pixel->R * 0.21 + pixel->G * 0.72 + pixel->B * 0.07;
+            pixel->R = value;
+            pixel->G = value;
+            pixel->B = value;
+        }
+    }
+    write_image_data("image_out.bmp", data, width, height);
+}
+int max (int a, int b) {
+    if (a>b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+int min (int a, int b) {
+    if (a<b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+void color_desaturate(char *source_path)
+{
+    int width, height, channel_count, i, j;
+    unsigned char *data;
+    pixelRGB *pixel;
+    unsigned char value;
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    for (j = 0; j < height; j++)
+    {
+        for (i = 0; i < width; i++)
+        {
+            pixel = get_pixel(data, width, height, channel_count, i, j);
+            value = (min(min(pixel->R,pixel->G),pixel->B)+(max(max(pixel->R,pixel->G),pixel->B)))/2;
             pixel->R = value;
             pixel->G = value;
             pixel->B = value;
