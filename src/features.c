@@ -1,5 +1,6 @@
 #include <estia-image.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "features.h"
 #include "utils.h"
@@ -434,21 +435,19 @@ void color_desaturate(char *source_path)
 
 void rotate_cw(char *source_path)
 {
-    unsigned char *data;
-    int width;
-    int height;
-    int channel_count;
+    int width, height, channel_count, i, j, k, x_new, y_new;
+    unsigned char *data, *new_data;
     read_image_data(source_path, &data, &width, &height, &channel_count);
-    unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
-    for (int y = 0; y < height; y++)
+    new_data = malloc(width * height * channel_count * sizeof(unsigned char));
+    for (j = 0; j < height; j++)
     {
-        for (int x = 0; x < width; x++)
+        for (i = 0; i < width; i++)
         {
-            for (int compt = 0; compt < channel_count; compt++)
+            for (k = 0; k < channel_count; k++)
             {
-                int new_x = -y + height - 1;
-                int new_y = x;
-                new_data[(new_y * height + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
+                x_new = -j + height - 1;
+                y_new = i;
+                new_data[(y_new * height + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
             }
         }
     }
@@ -458,19 +457,19 @@ void rotate_cw(char *source_path)
 
 void rotate_acw(char *source_path)
 {
-    unsigned char *data;
-    int width, height, channel_count;
+    int width, height, channel_count, i, j, k, x_new, y_new;
+    unsigned char *data, *new_data;
     read_image_data(source_path, &data, &width, &height, &channel_count);
-    unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
-    for (int y = 0; y < height; y++)
+    new_data = malloc(width * height * channel_count * sizeof(unsigned char));
+    for (j = 0; j < height; j++)
     {
-        for (int x = 0; x < width; x++)
+        for (i = 0; i < width; i++)
         {
-            for (int compt = 0; compt < channel_count; compt++)
+            for (k = 0; k < channel_count; k++)
             {
-                int new_x = y;
-                int new_y = -x + width - 1;
-                new_data[(new_y * height + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
+                x_new = j;
+                y_new = -i + width - 1;
+                new_data[(y_new * height + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
             }
         }
     }
@@ -478,20 +477,20 @@ void rotate_acw(char *source_path)
     free(new_data);
 }
 
-void mirror_horizontal (char *source_path)
+void mirror_horizontal(char *source_path)
 {
-    unsigned char *data;
-    int width, height, channel_count;
+    int width, height, channel_count, i, j, k, x_new;
+    unsigned char *data, *new_data;
     read_image_data(source_path, &data, &width, &height, &channel_count);
-    unsigned char *new_data = (unsigned char *)malloc(width * height * channel_count * sizeof(unsigned char));
-    for (int y = 0; y < height; y++)
+    new_data = malloc(width * height * channel_count * sizeof(unsigned char));
+    for (j = 0; j < height; j++)
     {
-        for (int x = 0; x < width; x++)
+        for (i = 0; i < width; i++)
         {
-            for (int compt = 0; compt < channel_count; compt++)
+            for (k = 0; k < channel_count; k++)
             {
-                int new_x = width-1-x;
-                new_data[(y * width + new_x) * channel_count + compt] = data[(y * width + x) * channel_count + compt];
+                x_new = width - 1 - i;
+                new_data[(j * height + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
             }
         }
     }
@@ -499,29 +498,29 @@ void mirror_horizontal (char *source_path)
     free(new_data);
 }
 
-void test (char *source_path)
+void mirror_vertical(char *source_path)
 {
-    int width, height, channel_count, i, j;
-    unsigned char *data;
-    pixelRGB *pixel, *new_pixel;
-    static pixelRGB tmp[1000000];
+    int width, height, channel_count, i, j, k, y_new;
+    unsigned char *data, *new_data;
     read_image_data(source_path, &data, &width, &height, &channel_count);
-    
+    new_data = malloc(width * height * channel_count * sizeof(unsigned char));
     for (j = 0; j < height; j++)
     {
         for (i = 0; i < width; i++)
         {
-            pixel = get_pixel(data, width, height, channel_count, i, j);
-            tmp[j*width+(width-1-i)] = *pixel ;
+            for (k = 0; k < channel_count; k++)
+            {
+                y_new = height - 1 - j;
+                new_data[(y_new * height + i) * channel_count + k] = data[(j * width + i) * channel_count + k];
+            }
         }
     }
-    for (j = 0; j < height; j++)
-    {
-        for (i = 0; i < width; i++)
-        {
-            new_pixel = get_pixel(data, width, height, channel_count, i, j);
-            *new_pixel = tmp[j*width+i];
-        }
-    }
-    write_image_data("image_out.bmp", data, height, width);
+    write_image_data("image_out.bmp", new_data, width, height);
+    free(new_data);
+}
+
+void mirror_total(char *source_path)
+{
+    mirror_horizontal(source_path);
+    mirror_vertical("image_out.bmp");
 }
