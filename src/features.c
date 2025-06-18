@@ -469,7 +469,7 @@ void rotate_acw(char *source_path)
             {
                 x_new = j;
                 y_new = -i + width - 1;
-                new_data[(y_new * height + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
+                new_data[(y_new * width + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
             }
         }
     }
@@ -490,7 +490,7 @@ void mirror_horizontal(char *source_path)
             for (k = 0; k < channel_count; k++)
             {
                 x_new = width - 1 - i;
-                new_data[(j * height + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
+                new_data[(j * width + x_new) * channel_count + k] = data[(j * width + i) * channel_count + k];
             }
         }
     }
@@ -511,7 +511,7 @@ void mirror_vertical(char *source_path)
             for (k = 0; k < channel_count; k++)
             {
                 y_new = height - 1 - j;
-                new_data[(y_new * height + i) * channel_count + k] = data[(j * width + i) * channel_count + k];
+                new_data[(y_new * width + i) * channel_count + k] = data[(j * width + i) * channel_count + k];
             }
         }
     }
@@ -523,4 +523,110 @@ void mirror_total(char *source_path)
 {
     mirror_horizontal(source_path);
     mirror_vertical("image_out.bmp");
+}
+
+void scale_crop(char *source_path, int center_x, int center_y, int width, int height)
+{
+    int original_width, original_height, channel_count, i, j, k, x, y;
+    unsigned char *data, *new_data;
+    read_image_data(source_path, &data, &original_width, &original_height, &channel_count);
+
+    int x0 = center_x - width / 2;
+    int y0 = center_y - height / 2;
+   
+    new_data = malloc(width * height * channel_count * sizeof(unsigned char));
+    for (j = 0; j < height; j++)
+    {
+        for (i = 0; i < width; i++)
+        {
+            for (k = 0; k < channel_count; k++)
+            {
+                x = x0 + i;
+                y = y0 + j;
+                if (x < 0 || x >= original_width || y < 0 || y >= original_height) {
+                    new_data[(j * width + i) * channel_count + k] = 0;
+                } else {
+                    new_data[(j * width + i) * channel_count + k] = data[(y * original_width + x) * channel_count + k];
+                }
+            }
+        }
+    }
+    write_image_data("image_out.bmp", new_data, width, height);
+    free(new_data);
+}
+
+void scale_nearest(char *source_path, float scale)
+{
+    int original_width, original_height, channel_count, i, j, k, x, y;
+    unsigned char *data, *new_data;
+    read_image_data(source_path, &data, &original_width, &original_height, &channel_count);
+
+    int new_width = (int)(original_width * scale);
+    int new_height = (int)(original_height * scale);
+
+    new_data = malloc(new_width * new_height * channel_count * sizeof(unsigned char));
+    for (j = 0; j < new_height; j++)
+    {
+        for (i = 0; i < new_width; i++)
+        {
+            for (k = 0; k < channel_count; k++)
+            {
+                x = (int)(i / scale);
+                y = (int)(j / scale);
+                if (x >= original_width) {
+                    x = original_width - 1;
+                }
+                if (y >= original_height) {
+                    y = original_height - 1;
+                }
+                new_data[(j * new_width + i) * channel_count + k] = data[(y * original_width + x) * channel_count + k];
+            }
+        }
+    }
+    write_image_data("image_out.bmp", new_data, new_width, new_height);
+    free(new_data);
+}
+
+void scale_bilinear(char *source_path, float scale)
+{
+    int original_width, original_height, channel_count, i, j, k, x_src, y_src;
+    float x_frac, y_frac;
+    unsigned char *data, *new_data;
+    read_image_data(source_path, &data, &original_width, &original_height, &channel_count);
+
+    int new_width = (int)(original_width * scale);
+    int new_height = (int)(original_height * scale);
+
+    new_data = malloc(new_width * new_height * channel_count * sizeof(unsigned char));
+    for (j = 0; j < new_height; j++)
+    {
+        for (i = 0; i < new_width; i++)
+        {
+            for (k = 0; k < channel_count; k++)
+            {
+                x_src = (int)(i / scale);
+                y_src = (int)(j / scale);
+                x_frac = (i / scale) - x_src;
+                y_frac = (j / scale) - y_src;
+
+                if (x_src < 0) x_src = 0;
+                if (y_src < 0) y_src = 0;
+                if (x_src >= original_width - 1) x_src = original_width - 2;
+                if (y_src >= original_height - 1) y_src = original_height - 2;
+
+                unsigned char q11 = data[(y_src * original_width + x_src) * channel_count + k];
+                unsigned char q12 = data[(y_src * original_width + (x_src + 1)) * channel_count + k];
+                unsigned char q21 = data[((y_src + 1) * original_width + x_src) * channel_count + k];
+                unsigned char q22 = data[((y_src + 1) * original_width + (x_src + 1)) * channel_count + k];
+
+                float val1 = q11 * (1 - x_frac) * (1 - y_frac) + q12 * x_frac * (1 - y_frac);
+                float val2 = q21 * (1 - x_frac) * y_frac + q22 * x_frac * y_frac;
+                unsigned char value = (unsigned char)(val1 + val2);
+
+                new_data[(j * new_width + i) * channel_count + k] = value;
+            }
+        }
+    }
+    write_image_data("image_out.bmp", new_data, new_width, new_height);
+    free(new_data);
 }

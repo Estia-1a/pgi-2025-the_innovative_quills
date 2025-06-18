@@ -138,6 +138,24 @@ int main(int argc, char **argv)
   {
     mirror_total(configuration.filenames[0]);
   }
-
+  else if (strncmp(configuration.command, "scale_crop", 10) == 0)
+  {
+    int center_x = atoi(argv[5]);
+    int center_y = atoi(argv[6]); 
+    int width = atoi(argv[7]);
+    int height = atoi(argv[8]);
+    scale_crop(configuration.filenames[0], center_x, center_y, width, height);
+  }
+  else if (strncmp(configuration.command, "scale_nearest", 13) == 0)
+  {
+    int scale = atoi(argv[5]);
+    scale_nearest(configuration.filenames[0], scale);
+  }
+  else if (strncmp(configuration.command, "scale_bilinear", 14) == 0)
+  {
+    int scale = atoi(argv[5]);
+    scale_bilinear(configuration.filenames[0], scale);
+  }
+  
   return 0;
 }
