@@ -124,7 +124,7 @@ int main(int argc, char **argv)
   }
   else if (strncmp(configuration.command, "rotate_acw", 11) == 0)
   {
-    rotate_cw(configuration.filenames[0]);
+    rotate_acw(configuration.filenames[0]);
   }
   else if (strncmp(configuration.command, "mirror_horizontal", 17) == 0)
   {
@@ -145,16 +145,6 @@ int main(int argc, char **argv)
     int width = atoi(argv[7]);
     int height = atoi(argv[8]);
     scale_crop(configuration.filenames[0], center_x, center_y, width, height);
-  }
-  else if (strncmp(configuration.command, "scale_nearest", 13) == 0)
-  {
-    int scale = atoi(argv[5]);
-    scale_nearest(configuration.filenames[0], scale);
-  }
-  else if (strncmp(configuration.command, "scale_bilinear", 14) == 0)
-  {
-    int scale = atoi(argv[5]);
-    scale_bilinear(configuration.filenames[0], scale);
   }
   
   return 0;
